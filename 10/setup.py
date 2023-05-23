@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 module_name = "cjson"
-c_files = ["cjson.c"]
+c_files = ["cjson.c", "kson.c"]
 
 extension = Extension(
     module_name,
@@ -10,7 +10,7 @@ extension = Extension(
 
 setup(
     name=module_name,
-    version="0.1",
+    version="0.4",
     description="My CJson module",
     author="evgx81",
     author_email="my_email@mail.ru",

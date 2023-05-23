@@ -130,7 +130,7 @@ void kson_pack(Kson *kson , char **kson_pack){
         }
         kson = swap;
     } while(kson->next != NULL);
-    strcat(*kson_pack,"}");
+    strcat(*kson_pack, "}");
 }
 
 void kson_get(struct Kson *kson , const char *key,char **value){

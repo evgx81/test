@@ -15,7 +15,26 @@ int main()
 
     Kson_Iterator* iterator = kson_iterator(kson);
 
-    printf("%s, %s", kson_keys_iterate(kson, &iterator), kson_keys_iterate(kson, &iterator));
+    // while ((iterator)->kson->next) {
+    //     printf("%s", kson_keys_iterate(kson, &iterator));
+    // }
+
+    while (iterator->kson->next) {
+        char* key = kson_keys_iterate(kson, &iterator);
+
+        printf("%s", key);
+
+        char* val = NULL;
+
+        kson_get(kson, key, &val);
+    
+        printf("%s", val);
+    }
+    
+    
+    // printf("%s", kson_keys_iterate(kson, &iterator));
+    // printf("%s", kson_keys_iterate(kson, &iterator));
+    // printf("%s", kson_keys_iterate(kson, &iterator));
 
     return 0;
 }
