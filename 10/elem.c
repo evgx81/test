@@ -133,3 +133,106 @@ char *elem_keys_iterate(struct Elem *elem, struct Elem_Iterator **elem_iterator)
     (*elem_iterator)->elem = (*elem_iterator)->elem->next;
     return return_key;
 }
+
+Elem_Array *elem_array_new(){
+    Elem_Array *elem_array = malloc(sizeof(Elem_Array));
+    elem_array->next = NULL;
+    return elem_array;
+}
+
+void elem_array_free(Elem_Array *elem_array){
+    Elem_Array *swap = NULL;
+    do{
+        swap = elem_array->next;
+        free(elem_array->value);
+        free(elem_array);
+        elem_array = swap;
+    } while(elem_array->next != NULL);
+}
+
+void elem_array_pack(struct Elem_Array *elem_array , char **elem_array_pack){
+    *elem_array_pack = malloc(2048*sizeof(char));
+    strcat(*elem_array_pack,"}");
+    Elem_Array *swap = NULL;
+    int i = 0;
+    do{
+        elem_string_pack(&elem_array->value);
+        swap = elem_array->next;
+        strcat(*elem_array_pack,"\"");
+        strcat(*elem_array_pack,elem_array->value);
+        strcat(*elem_array_pack,"\"");
+        if(elem_array->next->next != NULL){
+            i = i + 1;
+            if (i % 2 != 0)
+                strcat(*elem_array_pack,":");
+            else
+                strcat(*elem_array_pack,",");
+            strcat(*elem_array_pack," ");
+        }
+        elem_array = swap;
+    } while(elem_array->next != NULL);
+    strcat(*elem_array_pack,"{");
+    reverse(*elem_array_pack); 
+}
+
+void elem_array_add(struct Elem_Array **elem_array , const char *value){
+    Elem_Array *elem_array_item = malloc(sizeof(Elem_Array));
+    char *item_value = malloc(sizeof(char)*strlen(value));
+    strcpy(item_value,value);
+    elem_array_item->value = item_value;
+    elem_array_item->next = *elem_array;
+    *elem_array = elem_array_item;
+}
+
+void swap(char *s1, char*s2)
+{
+	char temp;
+	temp=*s1;
+	 *s1=*s2;
+	 *s2=temp;
+	
+}
+
+int stringlength(char *s)
+{
+	int i;
+	for(i=0;s[i];i++);
+	return i;
+	
+}
+
+int reverse(char *s)
+{
+    int a[1000],i,n,k=0,j=0,l;
+     
+    n=stringlength(s);
+ 
+    for(i=0;i<n/2;i++)  
+    {
+    	swap(&s[i],&s[n-1-i]);
+    }
+ 
+ 	for(i=0;s[i];i++)
+ 	{
+        if(s[i]==','||s[i]==':'||s[i]=='{'||s[i]=='}')
+        {
+		  a[k++]=i;		   
+	    }
+    }
+   
+    a[k]=i;
+       
+    for(i=0;i<=k;i++)
+	{
+		n=a[i]-j;
+		
+		for(l=0;l<n/2;l++)
+		{
+			swap(&s[l+j],&s[a[i]-1-l]);
+        }
+		j=a[i]+1;
+	 
+	}  
+	   
+}
+

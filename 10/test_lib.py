@@ -38,5 +38,11 @@ class TestParseJson(TestCase):
         self.assertEqual(cjson_dict["keyword6"], "Susan Wagner")
         self.assertEqual(cjson_dict["keyword5"], "Brandon Lloyd")
 
+    def test_loads_02(self):
+        d = {"Key1":"Val1", "Key2":"Val2"}
+        cjson_str = cjson.dumps(d)
+        self.assertEqual(cjson_str, "{\"Key_1\":\"Value_1\",\"Key_2\":\"Value_2\"}")
+
+
 if __name__ == "__main__":
     main()

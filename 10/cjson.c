@@ -55,10 +55,10 @@ static PyObject* cjson_loads(PyObject* self, PyObject* args)
     return dict;
 }
 
-static const char* get_const_char(PyObject *obj) {
+static char* get_const_char(PyObject *obj) {
     PyObject* repr = PyObject_Repr(obj);
     PyObject* str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
-    const char *bytes = PyBytes_AS_STRING(str);
+    char *bytes = PyBytes_AS_STRING(str);
 
     Py_XDECREF(repr);
     Py_XDECREF(str);
@@ -75,6 +75,36 @@ static PyObject* cjson_dumps(PyObject* self, PyObject* args)
         PyErr_SetString(CJsonError, "ERROR: failed to parse dict");
         return NULL;
     }
+
+    PyObject* key;
+    PyObject* value;
+    Py_ssize_t ppos = 0;
+
+    Elem_Array* arr = elem_array_new();
+
+    while (PyDict_Next(dict, &ppos, &key, &value)) 
+    {
+        char* key_str = get_const_char(key);
+        char* value_str = get_const_char(value);
+
+        elem_array_add(&arr, key_str);
+        elem_array_add(&arr, value_str);
+
+    }
+
+    char* jsonstr = NULL;
+
+    elem_array_pack(arr, &jsonstr);
+
+    elem_array_free(arr);
+
+    PyObject* retval = Py_BuildValue("es", "utf-8", jsonstr);
+    if (!retval) {
+        PyErr_SetString(CJsonError, "ERROR: value isn't got");
+        return NULL;
+    }
+
+    return retval;
 }
 
 static PyMethodDef CJsonMethods[] = {

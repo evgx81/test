@@ -3,14 +3,23 @@ import cjson
 import ujson
 import json
 
-def test_json(json_str: str):
+def test_json_01(json_str: str):
     _ = json.loads(json_str) 
 
-def test_ujson(json_str: str):
+def test_ujson_02(json_str: str):
     _ = ujson.loads(json_str) 
 
-def test_cjson(json_str: str):
-    _ = cjson.loads(json_str) 
+def test_cjson_03(json_str: str):
+    _ = cjson.loads(json_str)
+
+def test_json_04(d):
+    _ = json.dumps(d) 
+
+def test_ujson_05(d):
+    _ = ujson.dumps(d) 
+
+def test_cjson_06(d):
+    _ = cjson.dumps(d) 
 
 if __name__ == '__main__':
     Faker.seed(0)
@@ -20,7 +29,13 @@ if __name__ == '__main__':
         json_str += f'"{faker.numerify(text="keyword%")}": "{faker.name()}",'
     json_str += f'"{faker.numerify(text="keyword%")}": "{faker.name()}"'
     json_str += "}"
+
+    d = {"Key1":"Val1", "Key2":"Val2"}
     
-    test_json(json_str)
-    test_ujson(json_str)
-    test_cjson(json_str)
+    test_json_01(json_str)
+    test_ujson_02(json_str)
+    test_cjson_03(json_str)
+
+    test_json_04(json_str)
+    test_ujson_05(json_str)
+    test_cjson_06(json_str)
